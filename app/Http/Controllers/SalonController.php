@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Salon;
 use Illuminate\Http\Request;
-// use App\Http\Controllers\Request;
 use App\Http\Requests\StoreSalonRequest;
 use App\Http\Requests\UpdateSalonRequest;
 
@@ -16,7 +15,7 @@ class SalonController extends Controller
      */
     public function index()
     {
-        return 'ok';
+        return Salon::all();
     }
 
     /**

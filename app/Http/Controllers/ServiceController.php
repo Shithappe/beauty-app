@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 
@@ -13,7 +14,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        return Service::all();
     }
 
     /**
@@ -27,9 +28,17 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreServiceRequest $request)
+    public function store(Request $request) 
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'status' => 'required',
+            'salon_id' => 'required'
+        ]);
+        
+        Service::create($validatedData);
+        
+        return 'Success';
     }
 
     /**

@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Record extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'time',
+        'username',
+        'phone',
+        'salon_id',
+        'service_id',
+    ];
 }

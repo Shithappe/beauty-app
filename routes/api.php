@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\SalonController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\RecordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,9 @@ use App\Http\Controllers\SalonController;
 
 Route::get('/salon', [SalonController::class, 'index']);
 Route::post('/salon', [SalonController::class, 'store']);
+
+Route::get('/service', [ServiceController::class, 'index']);
+Route::post('/service', [ServiceController::class, 'store']);
+
+Route::get('/record', [RecordController::class, 'index']);
+Route::post('/record', [RecordController::class, 'store']);

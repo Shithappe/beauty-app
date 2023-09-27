@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Record;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRecordRequest;
 use App\Http\Requests\UpdateRecordRequest;
 
@@ -13,7 +14,7 @@ class RecordController extends Controller
      */
     public function index()
     {
-        //
+        return Record::all();
     }
 
     /**
@@ -27,9 +28,19 @@ class RecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRecordRequest $request)
+    public function store(Request $request) 
     {
-        //
+        $validatedData = $request->validate([
+            'time' => 'required',
+            'username' => 'required',
+            'phone' => 'required',
+            'salon_id' => 'required',
+            'service_id' => 'required'
+        ]);
+        
+        Record::create($validatedData);
+        
+        return 'Success';
     }
 
     /**
