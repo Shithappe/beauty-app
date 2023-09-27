@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salon;
+use Illuminate\Http\Request;
+// use App\Http\Controllers\Request;
 use App\Http\Requests\StoreSalonRequest;
 use App\Http\Requests\UpdateSalonRequest;
+
 
 class SalonController extends Controller
 {
@@ -13,7 +16,7 @@ class SalonController extends Controller
      */
     public function index()
     {
-        //
+        return 'ok';
     }
 
     /**
@@ -27,9 +30,16 @@ class SalonController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSalonRequest $request)
+    public function store(Request $request) 
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'address' => 'required'
+        ]);
+        
+        Salon::create($validatedData);
+        
+        return 'Success';
     }
 
     /**
@@ -61,6 +71,8 @@ class SalonController extends Controller
      */
     public function destroy(Salon $salon)
     {
-        //
+        $salon->delete();
+
+        return 'Deleted';
     }
 }
