@@ -12,9 +12,15 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(int $salon_id = null)
     {
-        return Service::all();
+        if ($salon_id == null) return Service::all();
+        else {
+            return Service::where([
+                ['salon_id', $salon_id],
+                ['is_avalible', true],
+            ])->get();;
+        }
     }
 
     /**
@@ -32,7 +38,6 @@ class ServiceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'status' => 'required',
             'salon_id' => 'required'
         ]);
         

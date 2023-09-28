@@ -22,10 +22,10 @@ use App\Http\Controllers\RecordController;
 //     return $request->user();
 // });
 
-Route::get('/salon', [SalonController::class, 'index']);
+Route::get('/salon', [SalonController::class, 'index_api']);
 Route::post('/salon', [SalonController::class, 'store']);
 
-Route::get('/service', [ServiceController::class, 'index']);
+Route::get('/service/{salon_id?}', [ServiceController::class, 'index']);
 Route::post('/service', [ServiceController::class, 'store']);
 
 Route::get('/record', [RecordController::class, 'index']);

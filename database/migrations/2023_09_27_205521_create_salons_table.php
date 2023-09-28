@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('address');
+            $table->boolean('is_open')->default(true);
             $table->timestamps();
         });
     }

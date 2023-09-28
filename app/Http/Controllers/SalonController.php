@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salon;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSalonRequest;
 use App\Http\Requests\UpdateSalonRequest;
@@ -13,9 +14,16 @@ class SalonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index_api()
     {
         return Salon::all();
+    }
+
+    public function index()
+    {
+        return Inertia::render('SelectSalon', [
+            'salons' => Salon::where('is_open', true)->get(),
+        ]);
     }
 
     /**
