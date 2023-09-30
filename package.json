@@ -20,6 +20,8 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "lucide-vue-next": "^0.279.0"
+        "lucide-vue-next": "^0.279.0",
+        "moment": "^2.29.4",
+        "vue-ctk-date-time-picker": "^3.0.0-alpha.0"
     }
 }

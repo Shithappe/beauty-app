@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('time');
+            $table->date('date');
+            $table->time('time');
             $table->string('username');
             $table->string('phone');
 

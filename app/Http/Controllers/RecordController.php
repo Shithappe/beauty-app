@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreRecordRequest;
 use App\Http\Requests\UpdateRecordRequest;
 
+use DateTime;
+use DatePeriod;
+use DateInterval;
+
 class RecordController extends Controller
 {
     /**
@@ -15,6 +19,39 @@ class RecordController extends Controller
     public function index()
     {
         return Record::all();
+    }
+
+    public function getAvailableRecords(int $serviceId, string $date)
+    {
+        $start = new DateTime('10:00:00');
+        $end = new DateTime('16:00:00');
+        $interval = new DateInterval('PT30M'); // interval 30 min
+
+        $takenPeriods = Record::where('service_id', '=', $serviceId)->where('date', '=', $date)->get();
+
+        $currentTime = $start;
+        $availablePeriods = [];
+
+        while ($currentTime <= $end) {
+            $availablePeriods[] = $currentTime->format('H:i');
+            $currentTime->add($interval);
+
+            if ($currentTime >= $end){
+                break;
+            }
+        }
+
+        $occupiedTimeSlots = [];
+        foreach ($takenPeriods as $occupiedTime) {
+            $formattedTime = (new DateTime($occupiedTime["time"]))->format('H:i');
+            $occupiedTimeSlots[] = $formattedTime;
+        }
+
+        $availablePeriods = array_diff($availablePeriods, $occupiedTimeSlots);
+        $availablePeriods = array_values($availablePeriods);
+
+        // return [$availablePeriods, $occupiedTimeSlots];
+        return $availablePeriods;
     }
 
     /**
@@ -30,13 +67,17 @@ class RecordController extends Controller
      */
     public function store(Request $request) 
     {
+        // return $request->all();
         $validatedData = $request->validate([
+            'date' => 'required',
             'time' => 'required',
             'username' => 'required',
             'phone' => 'required',
             'salon_id' => 'required',
             'service_id' => 'required'
         ]);
+
+        // return $validatedData;
         
         Record::create($validatedData);
         

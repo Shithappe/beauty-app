@@ -30,3 +30,5 @@ Route::post('/service', [ServiceController::class, 'store']);
 
 Route::get('/record', [RecordController::class, 'index']);
 Route::post('/record', [RecordController::class, 'store']);
+
+Route::get('/available-records/{serviceId}/{date}', [RecordController::class, 'getAvailableRecords']);

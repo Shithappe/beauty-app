@@ -10,6 +10,7 @@ class Record extends Model
     use HasFactory;
 
     protected $fillable = [
+        'date',
         'time',
         'username',
         'phone',
