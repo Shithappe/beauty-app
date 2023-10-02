@@ -24,11 +24,15 @@ use App\Http\Controllers\RecordController;
 
 Route::get('/salon', [SalonController::class, 'index_api']);
 Route::post('/salon', [SalonController::class, 'store']);
+Route::patch('/salon/{salon}', [SalonController::class, 'update']);
+Route::delete('/salon/{salon}', [SalonController::class, 'destroy']);
 
 Route::get('/service/{salon_id?}', [ServiceController::class, 'index']);
 Route::post('/service', [ServiceController::class, 'store']);
 
 Route::get('/record', [RecordController::class, 'index']);
 Route::post('/record', [RecordController::class, 'store']);
+Route::delete('/record/{record}', [RecordController::class, 'destroy']);
+
 
 Route::get('/available-records/{serviceId}/{date}', [RecordController::class, 'getAvailableRecords']);

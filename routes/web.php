@@ -31,3 +31,5 @@ Route::middleware([
 });
 
 Route::get('/', [SalonController::class, 'index']);
+
+Route::get('/admin', [SalonController::class, 'forAdmin']);

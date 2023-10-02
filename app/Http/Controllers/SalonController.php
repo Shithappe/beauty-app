@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Salon;
+use App\Models\Service;
+use App\Models\Record;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSalonRequest;
@@ -23,6 +25,13 @@ class SalonController extends Controller
     {
         return Inertia::render('SelectSalon', [
             'salons' => Salon::where('is_open', true)->get(),
+        ]);
+    }
+    
+    public function forAdmin()
+    {
+        return Inertia::render('Admin', [
+            'firstsalons' => Salon::all()
         ]);
     }
 
@@ -70,7 +79,14 @@ class SalonController extends Controller
      */
     public function update(UpdateSalonRequest $request, Salon $salon)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'address' => 'required'
+        ]);
+
+        $salon->update($validatedData);
+
+        return 'Updated';
     }
 
     /**
