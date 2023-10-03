@@ -25,16 +25,20 @@ const newSalon = ref({
     address: ''
 })
 
+const newService = ref({
+    name: '',
+    is_avalible: '',
+    salon_id: ''
+})
+
 
 const changeSelect = (value) => {
     switch (value) {
         case 'salon': getSalons(); break;
+        case 'service': getServices(); break;
         case 'record': getRecords(); break;
-            
-            
-    
-        default:
-            break;
+
+        default:  break;
     }
     select.value = value;
 }
@@ -80,6 +84,49 @@ async function deleteSalons(id) {
         });
 }
 
+async function getServices() {
+    axios.get('/api/service')
+        .then(function (response) {
+            console.log(response.data);
+
+            services.value = response.data;
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+async function createService() {
+    axios.post('/api/service', {
+        name: newService.value.name,
+        is_avalible: newService.value.is_avalible,
+        salon_id: newService.value.salon_id
+    })
+        .then(function (response) {
+            console.log(response.data);
+
+            newService.value.name = '';
+            newService.value.is_avalible = '';
+            newService.value.salon_id = '';
+
+            getServices();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+async function deleteService(id) {
+    axios.delete(`/api/service/${id}`)
+        .then(function (response) {
+            console.log(response.data);
+            getServices();
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
 
 async function getRecords() {
     axios.get('/api/record')
@@ -104,20 +151,13 @@ async function deleteRecord(id) {
         });
 }
 
-async function getAvailableRecords() {
-    const response = await axios.get(`/api/available-records/${serviceId.value}/${date.value}`)
-    availableTime.value = response.data;
-}
-
-
 </script>
 
 <template>
     <Head title="Admin" />
 
 
-    <div
-        class="text-white min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+    <div class="text-white min-h-screen w-full bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
         <div class="flex justify-center items-stretch">
             <button class="m-2 p-2 px-4 text-lg bg-slate-700 rounded-lg"
@@ -136,7 +176,6 @@ async function getAvailableRecords() {
                         <th class="px-4 py-2 text-left">ID</th>
                         <th class="pl-6 py-2 text-left">Name</th>
                         <th class="pl-6 py-2 text-left">Address</th>
-                        <th class="px-4 py-2 text-left">Activity</th>
                     </tr>
                 </thead>
 
@@ -161,6 +200,39 @@ async function getAvailableRecords() {
                 </tbody>
             </table>
 
+            <table v-else-if="select === 'service'" class="table-auto w-full">
+                <thead>
+                    <tr class="border-b">
+                        <th class="px-4 py-2 text-left">ID</th>
+                        <th class="pl-6 py-2 text-left">Name</th>
+                        <th class="pl-6 py-2 text-left">Is Avalible</th>
+                        <th class="pl-6 py-2 text-left">Salon ID</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="border-b"></td> 
+                        <td class="px-4 py-2 border-b"><TextInput v-model="newService.name" placeholder="Name" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b"><TextInput v-model="newService.is_avalible" placeholder="Is Avalible" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b"><TextInput v-model="newService.salon_id" placeholder="Salon ID (tempolary)" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b space-x-1">
+                            <PrimaryButton @click="createService">Create</PrimaryButton>
+                        </td>
+                    </tr>
+                    <tr v-for="service in services">
+                        <td class="px-4 py-2 border-b">{{ service.id }}</td>
+                        <td class="px-4 py-2 border-b"><TextInput v-model="service.name" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b"><TextInput v-model="service.is_avalible" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b"><TextInput v-model="service.salon_id" class="w-min text-white bg-transparent border-none focus:text-black" /></td>
+                        <td class="px-4 py-2 border-b space-x-1">
+                            <PrimaryButton>Update</PrimaryButton>
+                            <PrimaryButton @click="deleteService(service.id)">Delete</PrimaryButton>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
             <table v-else-if="select === 'record'" class="table-auto w-full">
                 <thead>
                     <tr class="border-b">
@@ -171,7 +243,6 @@ async function getAvailableRecords() {
                         <th class="px-4 py-2 text-left">Phone</th>
                         <th class="px-4 py-2 text-left">Salon ID</th>
                         <th class="px-4 py-2 text-left">Service ID</th>
-                        <th class="px-4 py-2 text-left">Activity</th>
                     </tr>
                 </thead>
 

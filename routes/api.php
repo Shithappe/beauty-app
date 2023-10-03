@@ -29,6 +29,7 @@ Route::delete('/salon/{salon}', [SalonController::class, 'destroy']);
 
 Route::get('/service/{salon_id?}', [ServiceController::class, 'index']);
 Route::post('/service', [ServiceController::class, 'store']);
+Route::delete('/service/{service}', [ServiceController::class, 'destroy']);
 
 Route::get('/record', [RecordController::class, 'index']);
 Route::post('/record', [RecordController::class, 'store']);

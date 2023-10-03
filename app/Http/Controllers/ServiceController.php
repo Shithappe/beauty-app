@@ -38,6 +38,7 @@ class ServiceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
+            'is_avalible' => 'required',
             'salon_id' => 'required'
         ]);
         
@@ -75,6 +76,8 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
     {
-        //
+        $service->delete();
+
+        return 'Deleted';
     }
 }

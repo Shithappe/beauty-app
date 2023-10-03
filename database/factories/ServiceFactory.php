@@ -17,7 +17,9 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $faker->name,
+            'email' => $faker->unique()->safeEmail,
+            'password' => bcrypt('password'),
         ];
     }
 }

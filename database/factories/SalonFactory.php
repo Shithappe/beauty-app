@@ -17,7 +17,9 @@ class SalonFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $faker->name,
+            'address' => $faker->address,
+            'is_open' => $faker->boolean,
         ];
     }
 }
